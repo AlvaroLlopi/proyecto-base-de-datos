@@ -1029,12 +1029,12 @@ END
 
 
 ------Triggers----
---tabla en la que se almacenan los datos de la operacion que se hace sobre la tabla escribano y el usuario que la realizo junto con la fecha y hora
+--tabla en la que se almacenan los datos de la operacion que se hace sobre la tabla escribano y el usuario que la realizo junto con la fecha y hora----
 create table actualizacioninsumos(
 	id_insumos INT,
 	id_categoria INT NOT NULL,
 	descripcion VARCHAR(50) NOT NULL,
-	imagen VARCHAR(150) NOT NULL,
+	img VARCHAR(150) NOT NULL,
 	stock INT NOT NULL,
 	stockMin INT NOT NULL,
 	operacion varchar(30),
@@ -1042,13 +1042,14 @@ create table actualizacioninsumos(
 	fecha datetime
 )
 select * from actualizacioninsumos
+
 --Disparador que almacena datos cada vez que se hace un insert en la tabla Insumos
-create trigger insertInsumo
+CREATE trigger insertInsumo
   on insumos
   after insert
  as 
  begin
-	INSERT INTO actualizacionInsumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
+	INSERT INTO actualizacioninsumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
    Select 
 		i.id_insumos,
 		i.id_categoria,
@@ -1065,12 +1066,12 @@ end
 
 
 --Disparador que almacena datos cada vez que se hace un update en la tabla Insumos
-create trigger updateInsumo
+CREATE trigger updateInsumo
 	on insumos
 	after update 
 as
  begin
-	INSERT INTO insumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
+	INSERT INTO actualizacioninsumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
    Select 
 		d.id_insumos,
 		d.id_categoria,
@@ -1082,7 +1083,7 @@ as
 		system_user,
 		GETDATE()
    from deleted d
-   INSERT INTO insumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
+   INSERT INTO actualizacioninsumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
    Select 
 		i.id_insumos,
 		i.id_categoria,
@@ -1102,7 +1103,7 @@ create trigger deleteInsumo
   after delete
  as 
  begin
-	INSERT INTO insumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
+	INSERT INTO actualizacioninsumos(id_insumos,id_categoria,descripcion,img,stock,stockMin,operacion,usuario,fecha)
    Select 
 		d.id_insumos,
 		d.id_categoria,
@@ -1117,27 +1118,27 @@ create trigger deleteInsumo
 end
 
 
---Transacciones--
+--Transacciones-- 
 --Operacion de transaccion que realiza la modificacion de dos registros de diferentes tablas y el insert de otro
 
-declare @Error int
+declare @Error int 
 begin tran
 
-exec ModificarUsuario 4,1,'Alcaraz Sonia','soniaalc','AlvaroGonzales@gmail.com','Barrio laguna seca sector 3 casa 13','374449276',2,1
-								
-exec ModificarLocalidad 2, 1, 'Adrogué'
+exec ModificarUsuario 4,1,'Alcaraz Sonia','soniaalc','AlvaroGonzales@gmail.com','Barrio laguna soto sector 3 casa 13','374449276',2,1
 
-exec InsertarInsumo 11,1,'Placa Madre Gigabyte Micro ATX','img',500,50
+exec ModificarLocalidad 2, 1, 'Madariaga'
 
+exec InsertarInsumo 78,1,'Placa Madre Gigabyte Micro ATX Cromada','img',500,50
 
-set @Error = @@Error
---En caso de error, se hace un rollback para que los datos vuelvan a un estado anterior a las modificaciones
-if (@Error <> 0)
+set @Error = @@Error 
+--En caso de error, se hace un rollback para que los datos vuelvan a un estado anterior a las modificaciones 
+if (@Error <> 0) 
 begin 
-rollback tran
-print 'Error en la transaccion'
-end
-else
-commit
-select * from insumos
+rollback tran 
+print 'Error en la transaccion' 
+end 
+else 
+commit 
+select * from insumos 
 select * from localidades
+select * from usuarios
