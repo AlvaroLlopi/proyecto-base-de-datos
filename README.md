@@ -1,146 +1,142 @@
 # proyecto-base-de-datos
 
-CREATE DATABASE insumosinformaticos			
-USE insumosinformaticos		
+CREATE DATABASE insumosinformaticos			--Creación de la base de datos
+USE insumosinformaticos			--Selecciona cualquier base de datos existente en el SQL esquema
 
---Creación de la tabla Provincias
-CREATE TABLE provincias
-(
-	id_provincia INT IDENTITY,
+--Creación de la tabla Provincias 
+CREATE TABLE provincias (
+	id_provincia INT, 
 	descripcion VARCHAR(20) NOT NULL,
 	CONSTRAINT PK_provincia PRIMARY KEY (id_provincia), 
 )
 
---Creación de la tabla Localidades
-CREATE TABLE localidades
-(
-	id_provincia INT,
-	id_localidad INT IDENTITY,
-	descripcion VARCHAR(100) NOT NULL,
+
+
+--Creación de la tabla Localidades 
+CREATE TABLE localidades ( 
+	id_provincia INT, 
+	id_localidad INT, 
+	descripcion VARCHAR(100) NOT NULL, 
 	CONSTRAINT PK_localidad PRIMARY KEY (id_provincia, id_localidad), 
 )
 
---Creación de la tabla Perfiles
-CREATE TABLE perfiles
-(
-	id_perfil INT IDENTITY,
-	descripcion VARCHAR(20) NOT NULL,
+
+--Creación de la tabla Perfiles 
+CREATE TABLE perfiles ( 
+	id_perfil INT, 
+	descripcion VARCHAR(20) NOT NULL, 
 	CONSTRAINT PK_perfil PRIMARY KEY (id_perfil), 
 )
 
---Creación de la tabla Usuarios
-CREATE TABLE usuarios
-(
-	id_usuario INT IDENTITY,
-	id_perfil INT,
-	nom_y_ape VARCHAR(100) NOT NULL,
-	contrasenia VARCHAR(8) NOT NULL,
-	email VARCHAR(100) NOT NULL,
-	domicilio VARCHAR(120) NOT NULL,
-	telefono VARCHAR(15) NOT NULL,
-	cod_provincia INT,
-	cod_localidad INT,
-	CONSTRAINT PK_usuario PRIMARY KEY (id_usuario),
+
+--Creación de la tabla Usuarios 
+CREATE TABLE usuarios (	
+	id_usuario INT, 
+	id_perfil INT, 
+	nom_y_ape VARCHAR(100) NOT NULL, 
+	contrasenia VARCHAR(8) NOT NULL, 
+	email VARCHAR(100) NOT NULL, 
+	domicilio VARCHAR(120) NOT NULL, 
+	telefono VARCHAR(15) NOT NULL, 
+	cod_provincia INT, 
+	cod_localidad INT, 
+	CONSTRAINT PK_usuario PRIMARY KEY (id_usuario), 
 	CONSTRAINT FK_usuario_perfil FOREIGN KEY (id_perfil) REFERENCES perfiles(id_perfil), 
 	CONSTRAINT FK_usuario_localidad FOREIGN KEY (cod_provincia, cod_localidad) REFERENCES localidades(id_provincia, id_localidad) 
 )
 
---Creación de la tabla Tipo de Pago
-CREATE TABLE tipo_pago
-(
-	id_tipo_pago INT IDENTITY,
-	descripcion VARCHAR(30) NOT NULL,
-	descuento REAL NOT NULL,
-	CONSTRAINT PK_tipo_pago PRIMARY KEY (id_tipo_pago) 
+--Creación de la tabla Tipo de Pago 
+CREATE TABLE tipo_pago ( 
+	id_tipo_pago INT, 
+	descripcion VARCHAR(30) NOT NULL, 
+	descuento REAL NOT NULL, 
+	CONSTRAINT PK_tipo_pago PRIMARY KEY (id_tipo_pago)
 )
 
---Creación de la tabla Sucursales
-CREATE TABLE sucursales
-(
-	cuit int NOT NULL CONSTRAINT UQ_sucursalCuit UNIQUE,
-	nombre VARCHAR(80) NOT NULL,
-	direccion VARCHAR(120) NOT NULL,
-	telefono VARCHAR(15) NOT NULL,
-	email VARCHAR(100) NOT NULL,
-	horarios VARCHAR(50) NOT NULL,
-	URL VARCHAR(150) NOT NULL,
+--Creación de la tabla Sucursales 
+CREATE TABLE sucursales( 
+	cuit int NOT NULL CONSTRAINT UQ_sucursalCuit UNIQUE, 
+	nombre VARCHAR(80) NOT NULL, 
+	direccion VARCHAR(120) NOT NULL, 
+	telefono VARCHAR(15) NOT NULL, 
+	email VARCHAR(100) NOT NULL, 
+	horarios VARCHAR(50) NOT NULL, 
+	URL VARCHAR(150) NOT NULL, 
 	CONSTRAINT PK_sucursal PRIMARY KEY (cuit) 
 )
 
 
---Creación de la tabla Categorías
-CREATE TABLE categorias
-(
-	id_categoria INT IDENTITY,
-	descripcion VARCHAR(30) NOT NULL,
-	CONSTRAINT PK_categoria PRIMARY KEY (id_categoria), 
+--Creación de la tabla Categorías 
+CREATE TABLE categorias(
+	id_categoria INT, 
+	descripcion VARCHAR(30) NOT NULL, 
+	CONSTRAINT PK_categoria PRIMARY KEY (id_categoria),
 )
---Creacion de la tabla Insumos
-CREATE TABLE insumos
-(
-	id_insumos INT IDENTITY,
+
+
+--Creacion de la tabla Insumos 
+CREATE TABLE insumos ( 
+	id_insumos INT,
 	id_categoria INT NOT NULL,
-	descripcion VARCHAR(50) NOT NULL,
-	img VARCHAR(150) NOT NULL,
-	stock INT NOT NULL,
-	stockMin INT NOT NULL,
+	descripcion VARCHAR(50) NOT NULL, 
+	img VARCHAR(150) NOT NULL, 
+	stock INT NOT NULL, 
+	stockMin INT NOT NULL, 
 	CONSTRAINT PK_insumo PRIMARY KEY (id_insumos), 
-	CONSTRAINT FK_insumo_categoria FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria), 
-	CONSTRAINT CK_insumoStock CHECK (stock > 0), --Restricción CHECK (valores válidos mayores a 0 en el atributo stock)
-	CONSTRAINT CK_insumoStockMin CHECK (stockMin > 0), --Restricción CHECK (valores válidos mayores a 0 en el atributo stockMin)
-	CONSTRAINT CK_insumo_StockMayorStockMin CHECK (stock >= stockMin) --Restricción CHECK (valores válidos mayores o iguales a stock en el atributo stockMin)
+	CONSTRAINT FK_insumo_categoria FOREIGN KEY (id_categoria) REFERENCES Categorias(id_categoria), CONSTRAINT CK_insumoStock CHECK (stock > 0), --Restricción CHECK (valores válidos mayores a 0 en el atributo stock) 
+	CONSTRAINT CK_insumoStockMin CHECK (stockMin > 0), --Restricción CHECK (valores válidos mayores a 0 en el atributo stockMin) 
+	CONSTRAINT CK_insumo_StockMayorStockMin CHECK (stock >= stockMin) --Restricción CHECK (valores válidos mayores o iguales a stock en el atributo stockMin) )
 )
 
-CREATE TABLE proveedores
-(
-	id_proveedor INT IDENTITY,
-	nombre VARCHAR(80) NOT NULL,
-	cuit VARCHAR(10) NOT NULL CONSTRAINT UQ_proveedorCuit UNIQUE,
-	domicilio VARCHAR(120) NOT NULL,
-	email VARCHAR(100) NOT NULL,
-	telefono VARCHAR(15) NOT NULL,
-	CONSTRAINT PK_proveedor PRIMARY KEY (id_proveedor),
+--Creacion de la tabla Proveedores
+CREATE TABLE proveedores ( 
+	id_proveedor INT, 
+	nombre VARCHAR(80) NOT NULL, 
+	cuit VARCHAR(10) NOT NULL CONSTRAINT UQ_proveedorCuit UNIQUE, 
+	domicilio VARCHAR(120) NOT NULL, 
+	email VARCHAR(100) NOT NULL, 
+	telefono VARCHAR(15) NOT NULL, 
+	CONSTRAINT PK_proveedor PRIMARY KEY (id_proveedor), 
 )
 
---Creación de la tabla Insumo-Proveedor
-CREATE TABLE insumos_proveedor
-(
-	id_insumo INT,
-	id_proveedor INT,
-	precio_Costo REAL NOT NULL,
-	precio_Venta REAL NOT NULL,
-	CONSTRAINT PK_insumoProveedor PRIMARY KEY (id_insumo, id_proveedor), 
-	CONSTRAINT FK_insumoProveedor_insumo FOREIGN KEY (id_insumo) REFERENCES insumos(id_insumos), 
+
+--Creación de la tabla Insumo-Proveedor 
+CREATE TABLE insumos_proveedor ( 
+	id_insumo INT, 
+	id_proveedor INT, 
+	precio_Costo REAL NOT NULL, 
+	precio_Venta REAL NOT NULL, 
+	CONSTRAINT PK_insumoProveedor PRIMARY KEY (id_insumo, id_proveedor),
+	CONSTRAINT FK_insumoProveedor_insumo FOREIGN KEY (id_insumo) REFERENCES insumos(id_insumos),
 	CONSTRAINT FK_insumoProveedor_proveedor FOREIGN KEY (id_proveedor) REFERENCES proveedores(id_proveedor) 
 )
 
+
 --Creación de la tabla Venta Detalle 
-CREATE TABLE venta_detalle
-(
-	id_detalle INT IDENTITY NOT NULL,
-	id_insumo INT NOT NULL,
-	id_proveedor INT NOT NULL,
-	cantidad INT NOT NULL,
-	precio_unitario REAL NOT NULL,
+CREATE TABLE venta_detalle ( 
+	id_detalle INT NOT NULL, 
+	id_insumo INT NOT NULL, 
+	id_proveedor INT NOT NULL, 
+	cantidad INT NOT NULL, 
+	precio_unitario REAL NOT NULL, 
 	CONSTRAINT PK_ventaDetalle PRIMARY KEY (id_detalle), 
 	CONSTRAINT FK_ventaDetalle_InsumoProveedor FOREIGN KEY (id_insumo, id_proveedor) REFERENCES insumos_proveedor(id_insumo, id_proveedor) 
 )
 
 
---Creación de la tabla Venta Cabecera
-CREATE TABLE venta_cabecera
-(
-	id_cabecera INT ,
-	id_detalle INT NOT NULL,
-	fecha_y_hora DATETIME NOT NULL,
-	total REAL NOT NULL,
-	id_usuario INT NOT NULL,
-	id_tipo_pago INT NOT NULL,
-	cuit INT NOT NULL,
+--Creación de la tabla Venta Cabecera 
+CREATE TABLE venta_cabecera ( 
+	id_cabecera INT NOT NULL, 
+	id_detalle INT NOT NULL, 
+	fecha_y_hora DATETIME NOT NULL, 
+	total REAL NOT NULL, 
+	id_usuario INT NOT NULL, 
+	id_tipo_pago INT NOT NULL, 
+	cuit INT NOT NULL, 
 	CONSTRAINT PK_ventaCabecera PRIMARY KEY (id_cabecera,id_detalle), 
-	CONSTRAINT FK_ventaCabecera_Detalle FOREIGN KEY (id_detalle) REFERENCES venta_detalle(id_detalle),
+	CONSTRAINT FK_ventaCabecera_Detalle FOREIGN KEY (id_detalle) REFERENCES venta_detalle(id_detalle), 
 	CONSTRAINT FK_ventaCabecera_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario), 
-	CONSTRAINT FK_ventaCabecera_tipo_pago FOREIGN KEY (id_tipo_pago) REFERENCES tipo_pago(id_tipo_pago),
+	CONSTRAINT FK_ventaCabecera_tipo_pago FOREIGN KEY (id_tipo_pago) REFERENCES tipo_pago(id_tipo_pago), 
 	CONSTRAINT FK_ventaCabecera_sucursales FOREIGN KEY (cuit) REFERENCES sucursales(cuit) 
 )
 
