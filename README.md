@@ -802,12 +802,12 @@ create procedure InsertarInsumo
 	@id_insumos INT,
 	@id_categoria INT,
 	@descripcion VARCHAR(50),
-	@imagen VARCHAR(150),
+	@img VARCHAR(150),
 	@stock INT,
 	@stockMin INT
 AS
 BEGIN
-INSERT INTO insumos VALUES(@id_insumos,@id_categoria,@descripcion,@imagen,@stock,@stockMin)
+INSERT INTO insumos VALUES(@id_insumos,@id_categoria,@descripcion,@img,@stock,@stockMin)
 END
 
 create procedure EliminarInsumo
@@ -822,7 +822,7 @@ create procedure ModificarInsumo
 	@id_insumos INT,
 	@id_categoria INT,
 	@descripcion VARCHAR(50),
-	@imagen VARCHAR(150),
+	@img VARCHAR(150),
 	@stock INT,
 	@stockMin INT
 AS
@@ -832,7 +832,7 @@ SET
 	id_insumos=@id_insumos,
 	id_categoria=@id_categoria,
 	descripcion=@descripcion,
-	imagen=@imagen,
+	img=@img,
 	stock=@stock,
 	stockMin=@stockMin
 where id_insumos= @id_insumos
@@ -917,8 +917,6 @@ SET
 	precio_Venta=@precio_Venta
 where id_insumo= @id_insumo and id_proveedor= @id_proveedor
 END
-END
-
 
 
 
@@ -960,7 +958,6 @@ SET
 	precio_unitario=@precio_unitario
 where id_detalle=@id_detalle
 END
-END
 
 ---VENTACABECERA---
 --Procedimiento almacenado para insertar una ventadetalle
@@ -974,7 +971,7 @@ create procedure InsertarVentaCabecera
 	@cuit INT
 AS
 BEGIN
-INSERT INTO venta_detalle VALUES(@id_cabecera,@id_detalle,@fecha_y_hora,@total,@id_usuario,@id_tipo_pago,@cuit)
+INSERT INTO venta_cabecera VALUES(@id_cabecera,@id_detalle,@fecha_y_hora,@total,@id_usuario,@id_tipo_pago,@cuit)
 END
 
 create procedure EliminarVentaCabecera
@@ -1006,8 +1003,6 @@ SET
 	cuit=@cuit
 where id_cabecera=@id_cabecera
 END
-END
-
 
 
 ------Triggers----
@@ -1123,4 +1118,4 @@ else
 commit 
 select * from insumos 
 select * from localidades
-select * from usuarios
+select * from usuar
