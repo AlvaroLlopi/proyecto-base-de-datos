@@ -1006,7 +1006,7 @@ END
 
 
 ------Triggers----
---tabla en la que se almacenan los datos de la operacion que se hace sobre la tabla escribano y el usuario que la realizo junto con la fecha y hora----
+--tabla en la que se almacenan los datos de la operacion que se hace sobre la tabla Insumos y el usuario que la realizo junto con la fecha y hora----
 create table actualizacioninsumos(
 	id_insumos INT,
 	id_categoria INT NOT NULL,
